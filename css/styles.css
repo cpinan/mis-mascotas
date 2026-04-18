@@ -435,12 +435,6 @@ main {
   letter-spacing: 2px;
 }
 
-#ss-prev, #ss-next {
-  width: 44px;
-  height: 44px;
-  font-size: 1.8rem;
-  line-height: 1;
-}
 
 /* ── Footer ── */
 footer {

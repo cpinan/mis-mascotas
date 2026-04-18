@@ -356,25 +356,14 @@ function closeSlideshow() {
 document.getElementById('ss-close').addEventListener('click', closeSlideshow);
 document.getElementById('ss-play').addEventListener('click', ssTogglePlay);
 
-document.getElementById('ss-prev').addEventListener('click', () => {
-  ssAdvance(-1);
-  if (ssPlaying) ssStartTimer();
-});
-
-document.getElementById('ss-next').addEventListener('click', () => {
-  ssAdvance(1);
-  if (ssPlaying) ssStartTimer();
-});
-
 document.getElementById('slideshow-btn').addEventListener('click', openSlideshow);
 
 // Keyboard
 document.addEventListener('keydown', (e) => {
   if (!document.getElementById('slideshow').classList.contains('open')) return;
   if (e.key === 'Escape')                     { closeSlideshow(); return; }
-  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); ssAdvance(1);  if (ssPlaying) ssStartTimer(); }
-  if (e.key === 'ArrowLeft')                   { ssAdvance(-1); if (ssPlaying) ssStartTimer(); }
-  if (e.key === 'p' || e.key === 'P')          { ssTogglePlay(); }
+  if (e.key === ' ') { e.preventDefault(); ssTogglePlay(); }
+  if (e.key === 'p' || e.key === 'P') { ssTogglePlay(); }
 });
 
 // Touch swipe
@@ -383,13 +372,7 @@ document.getElementById('slideshow').addEventListener('touchstart', (e) => {
 }, { passive: true });
 
 document.getElementById('slideshow').addEventListener('touchend', (e) => {
-  if (ssTouchX === null) return;
-  const dx = e.changedTouches[0].clientX - ssTouchX;
   ssTouchX = null;
-  if (Math.abs(dx) > 50) {
-    ssAdvance(dx < 0 ? 1 : -1);
-    if (ssPlaying) ssStartTimer();
-  }
 }, { passive: true });
 
 // ── Init ───────────────────────────────────────────────────────────────────
