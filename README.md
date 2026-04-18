@@ -37,7 +37,7 @@ mascotas/
 
 | Nombre | Años | Color acento |
 |--------|------|-------------|
-| Miyoto | ? – 2026 | `#b07d4a` |
+| Miyoto | 2015 – 2026 | `#b07d4a` |
 
 ---
 
