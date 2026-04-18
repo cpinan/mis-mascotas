@@ -43,7 +43,17 @@ mascotas/
 
 ## Agregar una nueva mascota
 
-### Opción A — Script automático (recomendado)
+### Opción A — Entrevista interactiva (recomendado)
+
+```bash
+node entrevistar-mascota.js
+```
+
+El script hace preguntas paso a paso: datos básicos (nombre, emoji, años, color) y preguntas narrativas (cómo llegó, personalidad, manías, qué extrañas) para **componer el tributo automáticamente**. Al final muestra una vista previa y pide confirmación antes de crear nada.
+
+---
+
+### Opción B — Script con argumentos
 
 ```bash
 node agregar-mascota.js <NombreCarpeta> [opciones]
