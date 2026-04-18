@@ -41,139 +41,59 @@ mascotas/
 
 ---
 
-## Agregar una nueva mascota
+## CLI — mascota.js
 
-### Opción A — Entrevista interactiva (recomendado)
+Todo se gestiona con un único script: `node mascota.js <comando>`.
 
 ```bash
-node entrevistar-mascota.js
+node mascota.js ayuda   # ver todos los comandos
 ```
 
-El script hace preguntas paso a paso: datos básicos (nombre, emoji, años, color) y preguntas narrativas (cómo llegó, personalidad, manías, qué extrañas) para **componer el tributo automáticamente**. Al final muestra una vista previa y pide confirmación antes de crear nada.
-
----
-
-### Opción B — Script con argumentos
+### Agregar una nueva mascota
 
 ```bash
-node agregar-mascota.js <NombreCarpeta> [opciones]
-```
+# Entrevista interactiva (recomendado)
+# Hace preguntas paso a paso y compone el tributo automáticamente
+node mascota.js entrevistar
 
-El script crea toda la estructura, genera `config.json` e `imagenes.json`, e importa fotos de Drive si se indica un archivo de links.
-
-```bash
-# Mínimo
-node agregar-mascota.js Luna
-
-# Con datos completos
-node agregar-mascota.js Luna \
-  --nombre "Luna" \
-  --emoji "🐱" \
-  --años "2018 – 2025" \
-  --badge "La más independiente" \
-  --tributo "Luna llegó un día de lluvia y nunca se fue." \
-  --avatar "https://drive.google.com/file/d/1ABC.../view?usp=sharing" \
-  --color "#7a9ec2" \
+# Con argumentos directos
+node mascota.js agregar Luna --nombre "Luna" --emoji "🐱" \
+  --años "2018 – 2025" --badge "..." --color "#7a9ec2" \
   --fotos links-luna.txt
-
-# Insertar en la segunda posición de los tabs
-node agregar-mascota.js Luna --posicion 2
 ```
 
-Después del script, solo queda copiar el avatar (si es local) y hacer `git push`.
+### Importar fotos desde Google Drive
 
----
-
-### Opción B — Manual
-
-### Paso 1 — Crear la carpeta
+Compartir cada foto como **"Cualquiera con el enlace"**, guardar los links en un `.txt` (uno por línea) y ejecutar:
 
 ```bash
-mkdir -p mascotas/NombreMascota/imagenes
+node mascota.js fotos <NombreCarpeta> links.txt
 ```
 
-### Paso 2 — Crear `mascotas/NombreMascota/config.json`
+El script extrae los IDs de Drive, actualiza `imagenes.json` y evita duplicados.
 
-```json
-{
-  "nombre": "Nombre a mostrar en la UI",
-  "emoji": "🐱",
-  "avatar": "https://drive.google.com/file/d/FILE_ID/view?usp=drive_link",
-  "años": "2010 – 2025",
-  "badge": "Texto pequeño bajo el nombre",
-  "tributo": "Párrafo de homenaje.\n\nUsar \\n para saltos de línea.",
-  "color_acento": "#c9a96e"
-}
+### Ver mascotas registradas
+
+```bash
+node mascota.js listar
 ```
+
+### Referencia de campos (`config.json`)
 
 | Campo | Descripción |
 |-------|-------------|
-| `nombre` | Nombre que aparece en la UI y en el tab |
+| `nombre` | Nombre visible en la UI y en el tab |
 | `emoji` | Fallback si el avatar no carga |
 | `avatar` | URL de Drive o ruta local (`imagenes/avatar.jpg`) |
-| `años` | Rango de vida, ej. `"2010 – 2025"` o `"2010 – presente"` |
-| `badge` | Texto decorativo pequeño bajo el nombre |
-| `tributo` | Texto de homenaje. Admite `\n` para saltos de línea. Las comillas `"` dentro del texto deben escaparse como `\"` |
+| `años` | Rango de vida, ej. `"2010 – 2025"` |
+| `badge` | Texto decorativo bajo el nombre |
+| `tributo` | Texto de homenaje. Admite `\n` para saltos de línea |
 | `color_acento` | Color CSS para el tab activo y el badge |
-
-### Paso 3 — Crear `mascotas/NombreMascota/imagenes.json`
-
-```json
-{
-  "fotos": [
-    "https://drive.google.com/file/d/FILE_ID/view?usp=drive_link",
-    "foto-local.jpg"
-  ]
-}
-```
-
-Las fotos de Drive deben estar compartidas como **"Cualquiera con el enlace"**.
 
 **Layout del collage — ciclo de 14 posiciones:**
 - Posiciones 1, 8 → celda alta (doble altura)
 - Posiciones 4, 11 → celda ancha (doble ancho)
 - Resto → celdas normales
-
-### Paso 4 — Registrar en `mascotas.json`
-
-Abrir `mascotas.json` en la raíz y agregar el nombre al array:
-
-```json
-{
-  "sitio": { "..." },
-  "mascotas": ["Miyoto", "NombreMascota"]
-}
-```
-
-El orden del array = orden de los tabs en el sitio.
-
-### Paso 5 — Publicar
-
-```bash
-git add mascotas/NombreMascota/ mascotas.json
-git commit -m "Agregar mascota: NombreMascota"
-git push
-```
-
----
-
-## Importar fotos desde Google Drive
-
-### Opción A — Manual
-
-1. Abrir la carpeta de Drive
-2. Click derecho en cada foto → **Compartir** → **Cualquiera con el enlace** → copiar link
-3. Pegar los links en `imagenes.json`
-
-### Opción B — Script automático
-
-Crear un archivo `links.txt` con un link por línea y ejecutar:
-
-```bash
-node drive-to-imagenes.js NombreMascota links.txt
-```
-
-El script extrae los IDs de Drive, actualiza `imagenes.json` y evita duplicados. Si ya había fotos, las conserva.
 
 ---
 
