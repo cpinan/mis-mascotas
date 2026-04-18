@@ -43,6 +43,39 @@ mascotas/
 
 ## Agregar una nueva mascota
 
+### Opción A — Script automático (recomendado)
+
+```bash
+node agregar-mascota.js <NombreCarpeta> [opciones]
+```
+
+El script crea toda la estructura, genera `config.json` e `imagenes.json`, e importa fotos de Drive si se indica un archivo de links.
+
+```bash
+# Mínimo
+node agregar-mascota.js Luna
+
+# Con datos completos
+node agregar-mascota.js Luna \
+  --nombre "Luna" \
+  --emoji "🐱" \
+  --años "2018 – 2025" \
+  --badge "La más independiente" \
+  --tributo "Luna llegó un día de lluvia y nunca se fue." \
+  --avatar "https://drive.google.com/file/d/1ABC.../view?usp=sharing" \
+  --color "#7a9ec2" \
+  --fotos links-luna.txt
+
+# Insertar en la segunda posición de los tabs
+node agregar-mascota.js Luna --posicion 2
+```
+
+Después del script, solo queda copiar el avatar (si es local) y hacer `git push`.
+
+---
+
+### Opción B — Manual
+
 ### Paso 1 — Crear la carpeta
 
 ```bash
