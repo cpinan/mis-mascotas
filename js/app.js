@@ -270,21 +270,26 @@ function ssAdvance(delta) {
   const nextIndex = (ssIndex + delta + ssPhotos.length) % ssPhotos.length;
   const nextSlot  = ssOtherSlot(ssSlot);
   const curImg    = ssImgEl(ssSlot);
+  const nextImg   = ssImgEl(nextSlot);
 
-  // Preload next, then crossfade
+  // Nueva foto encima, actual queda completamente visible debajo
+  curImg.style.zIndex  = '1';
+  nextImg.style.zIndex = '2';
+
   const preload = new Image();
   preload.onload = preload.onerror = () => {
-    ssShowSlot(nextIndex, nextSlot);
-    // Small delay so the new image is painted before we fade out the old one
-    requestAnimationFrame(() => {
-      curImg.classList.remove('visible');
-      // Clean up old slot after fade finishes
-      setTimeout(() => {
-        curImg.className = 'ss-img';
-      }, 1300);
-    });
+    ssShowSlot(nextIndex, nextSlot); // fade in sobre la actual
+
     ssIndex = nextIndex;
     ssSlot  = nextSlot;
+
+    // Una vez terminado el fade, limpiar la imagen de abajo
+    setTimeout(() => {
+      curImg.classList.remove('visible');
+      curImg.style.zIndex  = '';
+      nextImg.style.zIndex = '';
+      setTimeout(() => { curImg.className = 'ss-img'; }, 50);
+    }, 1300);
   };
   preload.src = ssPhotos[nextIndex];
 }
