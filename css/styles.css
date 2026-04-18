@@ -354,28 +354,16 @@ main {
 
 .ss-img.visible { opacity: 1; }
 
-/* Paneo muy sutil sin zoom — la foto se ve completa */
-@keyframes kb1 {
-  from { transform: translate(0%,     0%);   }
-  to   { transform: translate(-0.8%, -0.5%); }
-}
-@keyframes kb2 {
-  from { transform: translate(0.8%,  0.5%);  }
-  to   { transform: translate(0%,    0%);    }
-}
-@keyframes kb3 {
-  from { transform: translate(0.5%,  -0.4%); }
-  to   { transform: translate(-0.5%,  0.4%); }
-}
-@keyframes kb4 {
-  from { transform: translate(-0.5%,  0.4%); }
-  to   { transform: translate(0.5%,  -0.4%); }
-}
+/* Paneo sutil sin zoom — 4 direcciones distintas */
+@keyframes kb1 { from { transform: translate( 0.6%,  0.4%); } to { transform: translate(-0.6%, -0.4%); } } /* →izq+arriba */
+@keyframes kb2 { from { transform: translate(-0.6%, -0.4%); } to { transform: translate( 0.6%,  0.4%); } } /* →der+abajo  */
+@keyframes kb3 { from { transform: translate(-0.6%,  0.4%); } to { transform: translate( 0.6%, -0.4%); } } /* →der+arriba */
+@keyframes kb4 { from { transform: translate( 0.6%, -0.4%); } to { transform: translate(-0.6%,  0.4%); } } /* →izq+abajo  */
 
-.ss-img.kb1 { animation: kb1 7s ease-in-out forwards; }
-.ss-img.kb2 { animation: kb2 7s ease-in-out forwards; }
-.ss-img.kb3 { animation: kb3 7s ease-in-out forwards; }
-.ss-img.kb4 { animation: kb4 7s ease-in-out forwards; }
+.ss-img.kb1 { animation: kb1 5s ease-in-out forwards; }
+.ss-img.kb2 { animation: kb2 5s ease-in-out forwards; }
+.ss-img.kb3 { animation: kb3 5s ease-in-out forwards; }
+.ss-img.kb4 { animation: kb4 5s ease-in-out forwards; }
 
 /* Botón cerrar */
 #ss-close {

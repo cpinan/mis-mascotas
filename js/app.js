@@ -12,7 +12,8 @@ let ssSlot     = 'a';   // which img slot is currently visible
 let ssTimer    = null;
 let ssPlaying  = false;
 let ssTouchX   = null;
-const SS_DURATION  = 6000;
+let ssLastKb   = '';
+const SS_DURATION  = 5000;
 const SS_KB_NAMES  = ['kb1', 'kb2', 'kb3', 'kb4'];
 
 // ── Utilities ──────────────────────────────────────────────────────────────
@@ -240,9 +241,16 @@ function ssOtherSlot(slot) {
   return slot === 'a' ? 'b' : 'a';
 }
 
+function ssPickKb() {
+  const options = SS_KB_NAMES.filter(k => k !== ssLastKb);
+  const kb = options[Math.floor(Math.random() * options.length)];
+  ssLastKb = kb;
+  return kb;
+}
+
 function ssShowSlot(index, slot) {
   const img = ssImgEl(slot);
-  const kb  = SS_KB_NAMES[index % SS_KB_NAMES.length];
+  const kb  = ssPickKb();
 
   // Reset: strip all classes/animation, set new src
   img.className = 'ss-img';
