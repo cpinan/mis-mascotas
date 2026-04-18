@@ -139,11 +139,17 @@ function renderCollage(fotos, petName) {
     img.loading        = 'lazy';
     img.decoding       = 'async';
     img.referrerPolicy = 'no-referrer';
+    img.onerror        = () => {
+      cell.classList.add('foto-error');
+      cell.removeEventListener('click', openHandler);
+      img.remove();
+    };
 
     cell.appendChild(img);
-    cell.addEventListener('click', () => openLightbox(i));
+    const openHandler = () => openLightbox(i);
+    cell.addEventListener('click', openHandler);
     cell.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(i); }
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openHandler(); }
     });
     collage.appendChild(cell);
   });
@@ -250,12 +256,11 @@ function ssShowSlot(index, slot) {
   const img = ssImgEl(slot);
   const kb  = ssPickKb();
 
-  // Reset: strip all classes/animation, set new src
-  img.className = 'ss-img';
-  img.src       = ssPhotos[index];
-  img.alt       = `Foto ${index + 1}`;
+  img.className  = 'ss-img';
+  img.src        = ssPhotos[index];
+  img.alt        = `Foto ${index + 1}`;
+  img.onerror    = () => ssAdvance(1); // saltar si no carga
 
-  // Trigger reflow so the new animation fires fresh
   void img.offsetWidth;
 
   img.classList.add('visible', kb);
