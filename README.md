@@ -4,6 +4,9 @@ Sitio memorial estático para mascotas. Mobile-first, instalable como app (PWA),
 
 **Ver sitio:** https://cpinan.github.io/mis-mascotas
 
+> Si el sitio no carga, GitHub Pages puede tardar hasta 5 minutos la primera vez.
+> Verificar estado en: **Settings → Pages** del repositorio.
+
 ---
 
 ## Estructura del proyecto
