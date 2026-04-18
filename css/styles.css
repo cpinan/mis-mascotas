@@ -353,22 +353,22 @@ main {
 
 .ss-img.visible { opacity: 1; }
 
-/* Ken Burns variants — zoom + paneo en distintas direcciones */
+/* Ken Burns variants — zoom + paneo suaves */
 @keyframes kb1 {
-  from { transform: scale(1.00) translate(0%,    0%);    }
-  to   { transform: scale(1.14) translate(-3%,  -2%);    }
+  from { transform: scale(1.00) translate(0%,    0%);  }
+  to   { transform: scale(1.06) translate(-1.5%, -1%); }
 }
 @keyframes kb2 {
-  from { transform: scale(1.14) translate(3%,    2%);    }
-  to   { transform: scale(1.00) translate(0%,    0%);    }
+  from { transform: scale(1.06) translate(1.5%,  1%);  }
+  to   { transform: scale(1.00) translate(0%,    0%);  }
 }
 @keyframes kb3 {
-  from { transform: scale(1.00) translate(2%,   -1%);    }
-  to   { transform: scale(1.12) translate(-2%,   2%);    }
+  from { transform: scale(1.00) translate(1%,   -0.5%);}
+  to   { transform: scale(1.05) translate(-1%,   1%);  }
 }
 @keyframes kb4 {
-  from { transform: scale(1.12) translate(-1%,   2%);    }
-  to   { transform: scale(1.00) translate(2%,   -2%);    }
+  from { transform: scale(1.05) translate(-1%,   1%);  }
+  to   { transform: scale(1.00) translate(1%,   -1%);  }
 }
 
 .ss-img.kb1 { animation: kb1 7s ease-in-out forwards; }
