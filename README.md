@@ -12,10 +12,14 @@ Sitio memorial estático para mascotas. Mobile-first, instalable como app (PWA),
 ## Estructura del proyecto
 
 ```
-index.html                   ← App shell (no editar para cambiar textos)
+index.html                   ← Estructura HTML (no editar para cambiar textos)
 manifest.json                ← Configuración PWA
 sw.js                        ← Service Worker (cache offline)
 drive-to-imagenes.js         ← Script para importar fotos desde Google Drive
+css/
+  styles.css                 ← Todos los estilos visuales
+js/
+  app.js                     ← Toda la lógica de la app
 icons/
   main.png                   ← Ícono de la app (favicon + PWA)
 mascotas.json                ← Lista de mascotas + textos globales del sitio
