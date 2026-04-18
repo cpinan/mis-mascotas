@@ -1,5 +1,5 @@
 // Service Worker — Mascotas Memorias
-const CACHE_VERSION = 'v4';
+const CACHE_VERSION = 'v5';
 const CACHE_NAME = `mascotas-memorias-${CACHE_VERSION}`;
 
 const SHELL_ASSETS = [
@@ -7,6 +7,7 @@ const SHELL_ASSETS = [
   '/index.html',
   '/css/styles.css',
   '/js/app.js',
+  '/js/utils.mjs',
   '/manifest.json',
   '/mascotas.json',
   '/icons/main.png',

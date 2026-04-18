@@ -1,3 +1,5 @@
+import { driveUrl, resolvePhoto, renderTitle } from './utils.mjs';
+
 // ── State ──────────────────────────────────────────────────────────────────
 const cache = {};
 let petList = [];
@@ -5,32 +7,15 @@ let activePet = null;
 let lbPhotos = [];
 let lbIndex = 0;
 let lbTouchX = null;
-let ssPhotos   = [];
-let ssIndex    = 0;
-let ssSlot     = 'a';   // which img slot is currently visible
-let ssTimer    = null;
-let ssPlaying  = false;
-let ssLastKb   = '';
+let ssPhotos  = [];
+let ssIndex   = 0;
+let ssSlot    = 'a';   // which img slot is currently visible
+let ssTimer   = null;
+let ssPlaying = false;
+let ssLastKb  = '';
+let ssTouchX  = null;
 const SS_DURATION = 5000;
 const SS_KB_NAMES = ['kb1', 'kb2', 'kb3', 'kb4'];
-
-// ── Utilities ──────────────────────────────────────────────────────────────
-
-function driveUrl(raw) {
-  const m = raw.match(/\/file\/d\/([^/?]+)/);
-  return m ? `https://lh3.googleusercontent.com/d/${m[1]}` : raw;
-}
-
-function resolvePhoto(src, petName) {
-  if (src.startsWith('http://') || src.startsWith('https://')) {
-    return driveUrl(src);
-  }
-  return `mascotas/${petName}/imagenes/${src}`;
-}
-
-function renderTitle(raw) {
-  return raw.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-}
 
 function setAccent(color) {
   document.documentElement.style.setProperty('--accent', color || '#c9a96e');
