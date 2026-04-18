@@ -235,4 +235,5 @@ El Service Worker requiere `localhost` o HTTPS para funcionar.
 - El Service Worker cachea el shell (HTML, CSS, JS, JSON) para uso offline; las fotos de Drive no se cachean
 - El lightbox soporta swipe horizontal en móvil y navegación con flechas del teclado en desktop
 - El slideshow avanza automáticamente con crossfade y efecto Ken Burns (paneo sutil sin zoom); se activa con el botón "▶ Presentación" sobre la galería
+- **Modo offline**: el Service Worker cachea el shell (HTML, CSS, JS, JSONs) y las fotos locales tras la primera visita. Las fotos de Drive requieren conexión. Un banner se muestra automáticamente cuando no hay internet y desaparece al recuperar la conexión
 - Respeta `env(safe-area-inset-*)` para el notch e indicador de inicio en iPhone

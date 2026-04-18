@@ -341,6 +341,7 @@ document.getElementById('slideshow').addEventListener('touchend', (e) => {
 // ── Init ───────────────────────────────────────────────────────────────────
 
 async function init() {
+  updateOfflineBanner();
   showLoading(true);
   try {
     const data  = await loadJSON('mascotas.json');
@@ -369,6 +370,16 @@ async function init() {
     showError(true);
   }
 }
+
+// ── Offline detection ──────────────────────────────────────────────────────
+
+function updateOfflineBanner() {
+  document.getElementById('offline-banner')
+    .classList.toggle('visible', !navigator.onLine);
+}
+
+window.addEventListener('online',  updateOfflineBanner);
+window.addEventListener('offline', updateOfflineBanner);
 
 // ── Service Worker ─────────────────────────────────────────────────────────
 if ('serviceWorker' in navigator) {

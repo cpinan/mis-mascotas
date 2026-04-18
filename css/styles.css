@@ -34,6 +34,21 @@ body {
   padding-right: var(--safe-r);
 }
 
+/* ── Offline banner ── */
+#offline-banner {
+  display: none;
+  background: #3a2010;
+  color: #e8c48a;
+  font-size: 0.78rem;
+  text-align: center;
+  padding: 8px 16px;
+  border-bottom: 1px solid #5a3a1a;
+}
+
+#offline-banner.visible {
+  display: block;
+}
+
 /* ── Header ── */
 header {
   text-align: center;
