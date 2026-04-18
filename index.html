@@ -39,6 +39,10 @@
 
     <div id="tribute" style="display:none"></div>
 
+    <div id="slideshow-btn-wrap">
+      <button id="slideshow-btn" aria-label="Ver presentación">&#9654; Presentación</button>
+    </div>
+
     <div id="collage" role="list" aria-label="Galería de fotos"></div>
     <p id="collage-empty">Aún no hay fotos agregadas.</p>
   </main>
@@ -46,6 +50,21 @@
   <footer>
     <span id="site-footer"></span>
   </footer>
+
+  <!-- Slideshow -->
+  <div id="slideshow" role="dialog" aria-modal="true" aria-label="Presentación de fotos">
+    <div id="ss-stage">
+      <img id="ss-img-a" class="ss-img" src="" alt="" referrerpolicy="no-referrer" />
+      <img id="ss-img-b" class="ss-img" src="" alt="" referrerpolicy="no-referrer" />
+    </div>
+    <button id="ss-close" aria-label="Cerrar">&times;</button>
+    <span id="ss-counter"></span>
+    <div id="ss-controls">
+      <button id="ss-prev" aria-label="Anterior">&#8249;</button>
+      <button id="ss-play" aria-label="Pausar">&#9646;&#9646;</button>
+      <button id="ss-next" aria-label="Siguiente">&#8250;</button>
+    </div>
+  </div>
 
   <!-- Lightbox -->
   <div id="lightbox" role="dialog" aria-modal="true" aria-label="Foto ampliada">

@@ -6,6 +6,15 @@ let lbPhotos = [];
 let lbIndex = 0;
 let lbTouchX = null;
 
+let ssPhotos   = [];
+let ssIndex    = 0;
+let ssSlot     = 'a';   // which img slot is currently visible
+let ssTimer    = null;
+let ssPlaying  = false;
+let ssTouchX   = null;
+const SS_DURATION  = 6000;
+const SS_KB_NAMES  = ['kb1', 'kb2', 'kb3', 'kb4'];
+
 // ── Utilities ──────────────────────────────────────────────────────────────
 
 function driveUrl(raw) {
@@ -108,6 +117,10 @@ function renderCollage(fotos, petName) {
   collage.innerHTML = '';
 
   lbPhotos = fotos.map((src) => resolvePhoto(src, petName));
+  ssPhotos  = lbPhotos;
+
+  const btnWrap = document.getElementById('slideshow-btn-wrap');
+  btnWrap.style.display = fotos.length ? 'flex' : 'none';
 
   if (!fotos.length) {
     empty.style.display = 'block';
@@ -142,6 +155,7 @@ function renderCollage(fotos, petName) {
 async function switchPet(name) {
   if (activePet === name) return;
   activePet = name;
+  closeSlideshow();
   updateTabs(name);
   showLoading(true);
   showError(false);
@@ -215,6 +229,145 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowRight')  lbGo(1);
   if (e.key === 'ArrowLeft')   lbGo(-1);
 });
+
+// ── Slideshow ──────────────────────────────────────────────────────────────
+
+function ssImgEl(slot) {
+  return document.getElementById(`ss-img-${slot}`);
+}
+
+function ssOtherSlot(slot) {
+  return slot === 'a' ? 'b' : 'a';
+}
+
+function ssShowSlot(index, slot) {
+  const img = ssImgEl(slot);
+  const kb  = SS_KB_NAMES[index % SS_KB_NAMES.length];
+
+  // Reset: strip all classes/animation, set new src
+  img.className = 'ss-img';
+  img.src       = ssPhotos[index];
+  img.alt       = `Foto ${index + 1}`;
+
+  // Trigger reflow so the new animation fires fresh
+  void img.offsetWidth;
+
+  img.classList.add('visible', kb);
+
+  document.getElementById('ss-counter').textContent =
+    ssPhotos.length > 1 ? `${index + 1} / ${ssPhotos.length}` : '';
+}
+
+function ssAdvance(delta) {
+  const nextIndex = (ssIndex + delta + ssPhotos.length) % ssPhotos.length;
+  const nextSlot  = ssOtherSlot(ssSlot);
+  const curImg    = ssImgEl(ssSlot);
+
+  // Preload next, then crossfade
+  const preload = new Image();
+  preload.onload = preload.onerror = () => {
+    ssShowSlot(nextIndex, nextSlot);
+    // Small delay so the new image is painted before we fade out the old one
+    requestAnimationFrame(() => {
+      curImg.classList.remove('visible');
+      // Clean up old slot after fade finishes
+      setTimeout(() => {
+        curImg.className = 'ss-img';
+      }, 1300);
+    });
+    ssIndex = nextIndex;
+    ssSlot  = nextSlot;
+  };
+  preload.src = ssPhotos[nextIndex];
+}
+
+function ssStartTimer() {
+  clearInterval(ssTimer);
+  ssTimer = setInterval(() => ssAdvance(1), SS_DURATION);
+}
+
+function ssPlay() {
+  ssPlaying = true;
+  document.getElementById('ss-play').innerHTML = '&#9646;&#9646;';
+  document.getElementById('ss-play').setAttribute('aria-label', 'Pausar');
+  ssStartTimer();
+}
+
+function ssPause() {
+  ssPlaying = false;
+  clearInterval(ssTimer);
+  ssTimer = null;
+  document.getElementById('ss-play').innerHTML = '&#9654;';
+  document.getElementById('ss-play').setAttribute('aria-label', 'Reproducir');
+}
+
+function ssTogglePlay() {
+  if (ssPlaying) ssPause(); else ssPlay();
+}
+
+function openSlideshow() {
+  if (!ssPhotos.length) return;
+  ssIndex  = 0;
+  ssSlot   = 'a';
+
+  // Reset both slots
+  ssImgEl('a').className = 'ss-img';
+  ssImgEl('b').className = 'ss-img';
+
+  document.getElementById('slideshow').classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  ssShowSlot(0, 'a');
+  ssPlay();
+}
+
+function closeSlideshow() {
+  ssPause();
+  document.getElementById('slideshow').classList.remove('open');
+  document.body.style.overflow = '';
+  ssImgEl('a').className = 'ss-img';
+  ssImgEl('b').className = 'ss-img';
+}
+
+// Controls
+document.getElementById('ss-close').addEventListener('click', closeSlideshow);
+document.getElementById('ss-play').addEventListener('click', ssTogglePlay);
+
+document.getElementById('ss-prev').addEventListener('click', () => {
+  ssAdvance(-1);
+  if (ssPlaying) ssStartTimer();
+});
+
+document.getElementById('ss-next').addEventListener('click', () => {
+  ssAdvance(1);
+  if (ssPlaying) ssStartTimer();
+});
+
+document.getElementById('slideshow-btn').addEventListener('click', openSlideshow);
+
+// Keyboard
+document.addEventListener('keydown', (e) => {
+  if (!document.getElementById('slideshow').classList.contains('open')) return;
+  if (e.key === 'Escape')                     { closeSlideshow(); return; }
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); ssAdvance(1);  if (ssPlaying) ssStartTimer(); }
+  if (e.key === 'ArrowLeft')                   { ssAdvance(-1); if (ssPlaying) ssStartTimer(); }
+  if (e.key === 'p' || e.key === 'P')          { ssTogglePlay(); }
+});
+
+// Touch swipe
+document.getElementById('slideshow').addEventListener('touchstart', (e) => {
+  ssTouchX = e.touches[0].clientX;
+}, { passive: true });
+
+document.getElementById('slideshow').addEventListener('touchend', (e) => {
+  if (ssTouchX === null) return;
+  const dx = e.changedTouches[0].clientX - ssTouchX;
+  ssTouchX = null;
+  if (Math.abs(dx) > 50) {
+    ssAdvance(dx < 0 ? 1 : -1);
+    if (ssPlaying) ssStartTimer();
+  }
+}, { passive: true });
 
 // ── Init ───────────────────────────────────────────────────────────────────
 
