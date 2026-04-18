@@ -86,9 +86,9 @@ mkdir -p mascotas/NombreMascota/imagenes
 
 Las fotos de Drive deben estar compartidas como **"Cualquiera con el enlace"**.
 
-**Layout del collage según posición:**
-- Foto 0 → celda alta (doble altura)
-- Foto 3 → celda ancha (doble ancho)
+**Layout del collage — ciclo de 14 posiciones:**
+- Posiciones 1, 8 → celda alta (doble altura)
+- Posiciones 4, 11 → celda ancha (doble ancho)
 - Resto → celdas normales
 
 ### Paso 4 — Registrar en `mascotas.json`
@@ -201,4 +201,5 @@ El Service Worker requiere `localhost` o HTTPS para funcionar.
 - Las fotos de Drive se sirven vía `lh3.googleusercontent.com` con `referrerpolicy="no-referrer"` para evitar bloqueos por el header `Referer`
 - El Service Worker cachea el shell (HTML, CSS, JS, JSON) para uso offline; las fotos de Drive no se cachean
 - El lightbox soporta swipe horizontal en móvil y navegación con flechas del teclado en desktop
+- El slideshow avanza automáticamente con crossfade y efecto Ken Burns (paneo sutil sin zoom); se activa con el botón "▶ Presentación" sobre la galería
 - Respeta `env(safe-area-inset-*)` para el notch e indicador de inicio en iPhone
