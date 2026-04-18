@@ -6,13 +6,14 @@ let lbPhotos = [];
 let lbIndex = 0;
 let lbTouchX = null;
 
-let ssPhotos   = [];
-let ssIndex    = 0;
-let ssSlot     = 'a';   // which img slot is currently visible
-let ssTimer    = null;
-let ssPlaying  = false;
-let ssTouchX   = null;
-let ssLastKb   = '';
+let ssPhotos    = [];
+let ssIndex     = 0;
+let ssSlot      = 'a';   // which img slot is currently visible
+let ssTimer     = null;
+let ssPlaying   = false;
+let ssTouchX    = null;
+let ssLastKb    = '';
+let ssAdvanceId = 0;     // invalida limpiezas de avances anteriores
 const SS_DURATION  = 5000;
 const SS_KB_NAMES  = ['kb1', 'kb2', 'kb3', 'kb4'];
 
@@ -272,19 +273,28 @@ function ssAdvance(delta) {
   const curImg    = ssImgEl(ssSlot);
   const nextImg   = ssImgEl(nextSlot);
 
+  // Invalidar limpieza pendiente de cualquier avance anterior
+  const myId = ++ssAdvanceId;
+
+  // Resetear el slot que vamos a usar (puede estar sucio)
+  nextImg.className    = 'ss-img';
+  nextImg.style.zIndex = '';
+
   // Nueva foto encima, actual queda completamente visible debajo
   curImg.style.zIndex  = '1';
   nextImg.style.zIndex = '2';
 
   const preload = new Image();
   preload.onload = preload.onerror = () => {
-    ssShowSlot(nextIndex, nextSlot); // fade in sobre la actual
+    if (ssAdvanceId !== myId) return; // superado por un avance más reciente
 
+    ssShowSlot(nextIndex, nextSlot);
     ssIndex = nextIndex;
     ssSlot  = nextSlot;
 
-    // Una vez terminado el fade, limpiar la imagen de abajo
+    // Limpiar imagen de abajo solo si este avance sigue siendo el activo
     setTimeout(() => {
+      if (ssAdvanceId !== myId) return;
       curImg.classList.remove('visible');
       curImg.style.zIndex  = '';
       nextImg.style.zIndex = '';
